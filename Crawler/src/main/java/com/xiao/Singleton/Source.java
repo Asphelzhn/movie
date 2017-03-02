@@ -24,7 +24,7 @@ public class Source extends Base {
     private List<SortedMap<String, Object>> shards; // 真实机器节点
     private final int NODE_NUM = 100; // 每个机器节点关联的虚拟节点个数
 
-    private volatile Source source;
+    private volatile static Source source;
 
     //对相应的方法进行加锁操作
     ReentrantLock lock = new ReentrantLock();
@@ -53,12 +53,12 @@ public class Source extends Base {
     private Source() {
     }
 
-    public Source getInstance() {
+    public static Source getInstance() {
         if (null == source) {
             synchronized (Source.class) {
                 if (null == source) {
                     source = new Source();
-                    init();
+                    source.init();
                 }
             }
         }
@@ -67,7 +67,6 @@ public class Source extends Base {
 
     /**
      * 返回对应的真实节点
-     *
      * @param key
      * @return
      */
@@ -81,9 +80,9 @@ public class Source extends Base {
 
     /**
      * 使用分布式一致性hash算法做负载 存储爬取信息
-     *
      * @param key
      * @param o
+     * @return
      */
     public boolean putAndGetStatus(String key, Object o) {
         lock.lock();
