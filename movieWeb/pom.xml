@@ -1,12 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.interest</groupId>
-	<artifactId>interest</artifactId>
+	<groupId>com.xiao</groupId>
+	<artifactId>movieWeb</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>com.interest</name>
+	<name>movieWeb</name>
 	<url>http://maven.apache.org</url>
+
+	<!--设置工程utf8编码-->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -174,13 +180,11 @@
 		        <artifactId>maven-jetty-plugin</artifactId>
 		        <version>6.1.10</version>
 				<configuration>
-					<httpConnector>
-						<!--监听的端口名-->
-						<port>8080</port>
-						<!--监听的主机名-->
-						<host>localhost</host>
-					</httpConnector>
-					<encoding>UTF-8</encoding>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port> <!-- 访问端口,默认8080 -->
+						</connector>
+					</connectors>
 					<!--热部署的间隔时间-->
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<stopKey>foo</stopKey>
@@ -188,6 +192,6 @@
 				</configuration>
 			</plugin>
   		</plugins>
-		<finalName>interest</finalName>
+		<finalName>movieWeb</finalName>
 	</build>
 </project>
