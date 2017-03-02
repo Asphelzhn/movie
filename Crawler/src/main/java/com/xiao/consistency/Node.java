@@ -1,4 +1,4 @@
-package com.xiao;
+package com.xiao.consistency;
 
 /**
  * Created by Administrator on 2017/3/1 0001.

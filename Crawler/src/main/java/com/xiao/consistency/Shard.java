@@ -1,4 +1,4 @@
-package com.xiao;
+package com.xiao.consistency;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
