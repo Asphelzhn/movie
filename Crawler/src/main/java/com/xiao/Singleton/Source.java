@@ -96,4 +96,10 @@ public class Source extends Base {
         return flag;
     }
 
+    public void print(){
+        for(SortedMap<String, Object> map : shards){
+            System.out.println("map has key size:" + map.size());
+        }
+    }
+
 }
