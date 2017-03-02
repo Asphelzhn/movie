@@ -1,4 +1,4 @@
-package com.interest.controller;
+package com.xiao.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.interest.bean.User;
-import com.interest.service.UserService;
+import com.xiao.bean.User;
+import com.xiao.service.UserService;
 
 
 @Controller
