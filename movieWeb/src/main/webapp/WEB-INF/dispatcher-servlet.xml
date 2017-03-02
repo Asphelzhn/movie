@@ -15,7 +15,8 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-		<!-- 解决返回乱码 -->
+	
+	<!-- 解决返回乱码 -->
 	 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" >
 	     <property name="messageConverters" >
 	
@@ -23,13 +24,13 @@
 	
 	             <bean
 	                 id="utf8StringHttpMessageConverter"
-	                 class="com.interest.util.UTF8StringHttpMessageConverter" />
+	                 class="com.xiao.util.UTF8StringHttpMessageConverter" />
 	         </list>
 	     </property>
 	</bean>
 	<mvc:annotation-driven/>
 	<mvc:resources location="/WEB-INF/views/resources/" mapping="/resources/**"/>
-	<context:component-scan base-package="com.interest" />
+	<context:component-scan base-package="com.xiao" />
 	
 	<!-- 配置数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -105,7 +106,7 @@
     <!-- 通过AOP配置提供事务增强，让service包下所有Bean的所有方法拥有事务 -->
     <aop:config proxy-target-class="true">
         <aop:pointcut id="serviceMethod"
-            expression=" execution(* com.interest.service..*(..))" />
+            expression=" execution(* com.xiao.service..*(..))" />
         <aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
     </aop:config>
     <tx:advice id="txAdvice" transaction-manager="transactionManager">

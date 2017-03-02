@@ -1,8 +1,8 @@
-package com.interest.service;
+package com.xiao.service;
 
 import java.util.List;
 
-import com.interest.bean.User;
+import com.xiao.bean.User;
 
 
 public interface UserService {

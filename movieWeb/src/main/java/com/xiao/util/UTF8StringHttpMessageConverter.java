@@ -1,4 +1,4 @@
-package com.interest.util;
+package com.xiao.util;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

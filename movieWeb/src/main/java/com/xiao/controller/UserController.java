@@ -1,9 +1,6 @@
-package com.interest.controller;
+package com.xiao.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.interest.bean.User;
-import com.interest.service.UserService;
+import com.xiao.bean.User;
+import com.xiao.service.UserService;
 
 @Controller
 @RequestMapping(value="/user")

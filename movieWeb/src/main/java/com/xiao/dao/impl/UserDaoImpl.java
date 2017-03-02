@@ -1,7 +1,5 @@
-package com.interest.dao.impl;
+package com.xiao.dao.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,13 +7,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
-import com.interest.bean.User;
-import com.interest.dao.UserDao;
+import com.xiao.bean.User;
+import com.xiao.dao.UserDao;
 
 
 @Repository

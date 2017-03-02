@@ -1,9 +1,9 @@
-package com.interest.dao;
+package com.xiao.dao;
 
 
 import java.util.List;
 
-import com.interest.bean.User;
+import com.xiao.bean.User;
 
 public interface UserDao {
 

@@ -1,4 +1,4 @@
-package com.interest.bean;
+package com.xiao.bean;
 
 public class Student {
 
