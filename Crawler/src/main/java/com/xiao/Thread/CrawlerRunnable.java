@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -75,4 +76,9 @@ public class CrawlerRunnable implements Runnable {
         }
 
     }
+
+    public void addMovie(Document doc){
+        String[] content = doc.getElementById("Zoom").getElementsByTag("p").get(0).text().split("◎");
+    }
+
 }
