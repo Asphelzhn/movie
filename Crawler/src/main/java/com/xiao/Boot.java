@@ -14,6 +14,7 @@ public class Boot {
 
     public static void main(String[] args) {
 
+        //需要爬取的网站路径
         final String[] urls = {"http://www.dytt8.net/index.htm", "http://www.dy2018.com", "http://www.dygang.com"};
         final CountDownLatch countDownLatch = new CountDownLatch(urls.length);
         final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
