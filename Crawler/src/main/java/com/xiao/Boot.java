@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2017/3/2 0002.
+ * 启动爬虫类
  */
 public class Boot {
 
