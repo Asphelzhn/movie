@@ -1,7 +1,15 @@
 package com.xiao.Singleton;
 
 import com.xiao.Base;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
@@ -26,8 +34,12 @@ public class Source extends Base {
 
     private volatile static Source source;
 
-    //对相应的方法进行加锁操作
+    //对map容器存放值进行加锁操作
     ReentrantLock lock = new ReentrantLock();
+
+    //对建立索引进行枷锁操作
+    ReentrantLock indexSearchLock = new ReentrantLock();
+
 
     /**
      * 初始化相应的数据结构
@@ -99,6 +111,27 @@ public class Source extends Base {
     public void print(){
         for(SortedMap<String, Object> map : shards){
             System.out.println("map has key size:" + map.size());
+        }
+    }
+
+    /**
+     * 建立索引
+     * */
+    public void index(String path){
+        //进行加锁操作
+        indexSearchLock.lock();
+        try {
+            Directory directory = FSDirectory.open(Paths.get(path));
+            //创建分词器
+            Analyzer analyzer = new SmartChineseAnalyzer();
+            IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
+            IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            indexSearchLock.unlock();
         }
     }
 
