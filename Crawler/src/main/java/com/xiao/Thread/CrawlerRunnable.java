@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -35,20 +34,22 @@ public class CrawlerRunnable implements Runnable {
             List<String> urls = new ArrayList<String>();
 
             String domain = url.split("/")[2];
-            Document doc = Jsoup.connect(url).get();
+            Document doc = Jsoup.connect(url).timeout(5000).get();
             Elements links = doc.getElementsByTag("a");
             if (null != links && links.size() > 0) {
                 for (Element link : links) {
                     String linkHref = link.attr("href");
-                    String linkText = link.text();
+//                    String linkText = link.text();
 
                     if (linkHref.endsWith("html")) {
 
-                        if (!linkHref.startsWith("http"))
-                            linkHref = "http://" + domain + "/" + linkHref;
+                        if (!linkHref.startsWith("http")) {
+                            linkHref =  domain + "/" + linkHref;
+                            linkHref = "http://" + linkHref.replaceAll("//", "/");
+                        }
 
                         if(linkHref.contains(domain)) {
-                            if (source.putAndGetStatus(linkHref, linkText)) {
+                            if (source.putAndGetStatus(linkHref, doc.text())) {
                                 System.out.println(Thread.currentThread().getName() + "------>" +linkHref +"----->" + doc.text());
                                 urls.add(linkHref);
                             }
@@ -75,10 +76,6 @@ public class CrawlerRunnable implements Runnable {
             countDownLatch.countDown();
         }
 
-    }
-
-    public void addMovie(Document doc){
-        String[] content = doc.getElementById("Zoom").getElementsByTag("p").get(0).text().split("◎");
     }
 
 }
