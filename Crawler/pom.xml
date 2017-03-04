@@ -19,7 +19,7 @@
   </build>
   <packaging>jar</packaging>
 
-  <name>test</name>
+  <name>crawler</name>
   <url>http://maven.apache.org</url>
 
   <properties>
