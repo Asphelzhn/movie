@@ -28,7 +28,7 @@
 
   <dependencies>
 
-    <!-- 解析html -->
+    <!-- 解析html使用 -->
     <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
