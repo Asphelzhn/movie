@@ -169,7 +169,46 @@
 		    <groupId>cglib</groupId>  
 		    <artifactId>cglib</artifactId>  
 		    <version>2.2.2</version>  
-		</dependency> 
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+
+		<!-- 高亮 -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+
+		<!-- 中文分词器 SmartChineseAnalyzer -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-smartcn</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+
+		<!-- 文件操作jar包 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
 		
 	</dependencies>
 	<build>
