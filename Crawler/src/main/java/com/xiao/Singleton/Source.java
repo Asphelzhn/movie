@@ -140,7 +140,7 @@ public class Source extends Base {
      * @param path
      * @param map
      */
-    public void index(String path, SortedMap<String, Object> map) {
+    protected void index(String path, SortedMap<String, Object> map) {
         //进行加锁操作
         indexSearchLock.lock();
         try {
