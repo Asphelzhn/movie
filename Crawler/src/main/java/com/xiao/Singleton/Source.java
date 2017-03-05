@@ -45,7 +45,7 @@ public class Source extends Base {
 
     private volatile static Source source;
     private final String path = "/Users/xiaojie/lucene";
-    private final int number = 1000;//默认检索结果数
+    private final int number = 100;//默认检索结果数
 
     //对map容器存放值进行加锁操作
     ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
