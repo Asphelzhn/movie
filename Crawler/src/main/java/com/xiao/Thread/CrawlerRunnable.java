@@ -31,15 +31,22 @@ public class CrawlerRunnable implements Runnable {
     public void run() {
         try {
 
+            Document doc = Jsoup.connect(url).timeout(20000).get();
+            String text = doc.text();
+            //判断是否已经访问过了
+            if(!source.putAndGetStatus(url, text)){
+                return;
+            }
+
+            System.out.println(Thread.currentThread().getName() + "------>" + url +"----->" + doc.text());
+
             List<String> urls = new ArrayList<String>();
 
             String domain = url.split("/")[2];
-            Document doc = Jsoup.connect(url).timeout(5000).get();
             Elements links = doc.getElementsByTag("a");
             if (null != links && links.size() > 0) {
                 for (Element link : links) {
                     String linkHref = link.attr("href");
-//                    String linkText = link.text();
 
                     if (linkHref.endsWith("html")) {
 
@@ -49,10 +56,7 @@ public class CrawlerRunnable implements Runnable {
                         }
 
                         if(linkHref.contains(domain)) {
-                            if (source.putAndGetStatus(linkHref, doc.text())) {
-                                System.out.println(Thread.currentThread().getName() + "------>" +linkHref +"----->" + doc.text());
                                 urls.add(linkHref);
-                            }
                         }
                     }
 
