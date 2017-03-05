@@ -149,6 +149,7 @@ public class Source extends Base {
             Analyzer analyzer = new SmartChineseAnalyzer();
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
             IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
+            List<Document> documents = new LinkedList<Document>();
             for (SortedMap.Entry<String, Object> entry : map.entrySet()) {
                 String url = entry.getKey();
                 String content = (String) entry.getValue();
@@ -156,8 +157,9 @@ public class Source extends Base {
                 doc.add(new StringField("url", url, Field.Store.YES));
                 //对于内容只索引并且存储
                 doc.add(new TextField("content", content, Field.Store.YES));
-                indexWriter.addDocument(doc);
+                documents.add(doc);
             }
+            indexWriter.addDocuments(documents);
             indexWriter.close();
             directory.close();
 
