@@ -28,7 +28,7 @@ public class Boot {
         try {
             countDownLatch.await();
             fixedThreadPool.shutdown();
-            source.print();
+            source.index();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
