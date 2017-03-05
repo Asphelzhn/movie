@@ -1,20 +1,31 @@
 package com.xiao.Singleton;
 
 import com.xiao.Base;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 /**
@@ -33,9 +44,11 @@ public class Source extends Base {
     private final int NODE_NUM = 100; // 每个机器节点关联的虚拟节点个数
 
     private volatile static Source source;
+    private final String path = "/Users/xiaojie/lucene";
+    private final int number = 1000;//默认检索结果数
 
     //对map容器存放值进行加锁操作
-    ReentrantLock lock = new ReentrantLock();
+    ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     //对建立索引进行枷锁操作
     ReentrantLock indexSearchLock = new ReentrantLock();
@@ -79,6 +92,7 @@ public class Source extends Base {
 
     /**
      * 返回对应的真实节点
+     *
      * @param key
      * @return
      */
@@ -92,32 +106,41 @@ public class Source extends Base {
 
     /**
      * 使用分布式一致性hash算法做负载 存储爬取信息
+     *
      * @param key
      * @param o
      * @return
      */
     public boolean putAndGetStatus(String key, Object o) {
-        lock.lock();
+        lock.writeLock().lock();
         Boolean flag = new Boolean(false);
         SortedMap<String, Object> map = getShardInfo(key);
         if (!map.containsKey(key)) {
             map.put(key, o);
             flag = true;
         }
-        lock.unlock();
+        lock.writeLock().unlock();
         return flag;
     }
 
-    public void print(){
-        for(SortedMap<String, Object> map : shards){
-            System.out.println("map has key size:" + map.size());
+    //对所有数据进行索引
+    public void index() {
+        lock.readLock().lock();
+        for (SortedMap<String, Object> map : shards) {
+            System.out.println("start index map size:" + map.size());
+            index(path, map);
+            System.out.println("finish index map");
         }
+        lock.readLock().unlock();
     }
 
     /**
      * 建立索引
-     * */
-    public void index(String path){
+     *
+     * @param path
+     * @param map
+     */
+    public void index(String path, SortedMap<String, Object> map) {
         //进行加锁操作
         indexSearchLock.lock();
         try {
@@ -126,13 +149,71 @@ public class Source extends Base {
             Analyzer analyzer = new SmartChineseAnalyzer();
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
             IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
+            for (SortedMap.Entry<String, Object> entry : map.entrySet()) {
+                String url = entry.getKey();
+                String content = (String) entry.getValue();
+                Document doc = new Document();
+                doc.add(new StringField("url", url, Field.Store.YES));
+                //对于内容只索引并且存储
+                doc.add(new TextField("content", content, Field.Store.YES));
+                indexWriter.addDocument(doc);
+            }
+            indexWriter.close();
+            directory.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            indexSearchLock.unlock();
+        }
+    }
+
+    /**
+     * 检索索引
+     *
+     * @param searchWord
+     */
+    public void search(String searchWord) {
+
+        //判断是否检索内容是否为空
+        if (StringUtils.isBlank(searchWord))
+            return;
+
+        try {
+            Directory directory = FSDirectory.open(Paths.get(path));
+
+            //创建分词器
+            Analyzer analyzer = new SmartChineseAnalyzer();
+            IndexReader ir = DirectoryReader.open(directory);
+
+            // 搜索器
+            IndexSearcher searcher = new IndexSearcher(ir);
+
+            // 查询哪个字段
+            QueryParser parse = new QueryParser("content", analyzer);
+            Query query = parse.parse(searchWord);
+            TopDocs topDocs = searcher.search(query, number);
+
+            // 碰撞结果
+            ScoreDoc[] hits = topDocs.scoreDocs;
+            if(null != hits) {
+                for (int i = 0; i < hits.length; i++) {
+                    ScoreDoc hit = hits[i];
+                    Document hitDoc = searcher.doc(hit.doc);
+                    System.out.println(hit.score + " " + hitDoc.get("url"));
+                    System.out.println(hitDoc.get("content"));
+                    System.out.println("---------------------------------");
+                }
+            }
 
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            indexSearchLock.unlock();
+        } catch (ParseException e1) {
+            e1.printStackTrace();
         }
+
     }
+
 
 }
