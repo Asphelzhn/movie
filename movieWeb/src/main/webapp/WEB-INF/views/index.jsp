@@ -20,10 +20,10 @@
 			<img id="bannerImg" width="120" height="160" src="images/1.jpeg" />
 		</div>
 		<div class="w">
-			<form>
+			<form method="post" action="search" name="myForm">
 				<div class="input-group clearfix">
-					<input type="text" class="input" id="keyWords" placeholder="铁道飞虎~" />
-					<button class="btn">搜索</button>
+					<input type="text" class="input" id="keyWords"  name="keywords" placeholder="铁道飞虎~" />
+					<button class="btn" >搜索</button>
 				</div>
 			</form>
 		<script type="text/javascript">

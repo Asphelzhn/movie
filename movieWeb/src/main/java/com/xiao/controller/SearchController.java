@@ -16,7 +16,7 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String search(String keywords) {
         JSONObject jsonObject = new JSONObject();
