@@ -4,3 +4,7 @@
 
 Crawler是爬虫程序，爬取电影网站内容，建立索引
 movieWeb是web端程序（springMVC开发），提供检索服务
+
+用户推荐算法参考：
+http://www.cnblogs.com/kunpengit/archive/2013/03/04/2942684.html
+http://blog.csdn.net/u010670689/article/details/41895105
