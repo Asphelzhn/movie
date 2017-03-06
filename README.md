@@ -9,3 +9,5 @@ movieWeb是web端程序（springMVC开发），提供检索服务
 http://www.cnblogs.com/kunpengit/archive/2013/03/04/2942684.html
 http://blog.csdn.net/u010670689/article/details/41895105
 http://www.cnblogs.com/hxsyl/p/4000756.html
+用户和物品协同过滤：
+http://blog.csdn.net/huagong_adu/article/details/7362908
