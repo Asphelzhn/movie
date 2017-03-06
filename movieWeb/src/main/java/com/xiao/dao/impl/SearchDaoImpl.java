@@ -30,7 +30,7 @@ import java.util.List;
 public class SearchDaoImpl implements SearchDao{
 
     private final String path = "/Users/xiaojie/lucene";
-    private final int number = 100;//默认检索结果数
+    private final int number = 10;//默认检索结果数
 
     public List<Movie> search(String keyWord) {
 
@@ -63,10 +63,12 @@ public class SearchDaoImpl implements SearchDao{
                     Document hitDoc = searcher.doc(hit.doc);
                     Movie movie = new Movie();
                     String content = hitDoc.get("content");
-                    if(null != content && content.length() > 20) {
-                        movie.setContent(content.substring(0, 20));
+                    if(null != content && content.length() > 60) {
+                        movie.setContent(content.substring(0, 60));
+                        movie.setTitle(content.substring(0, 25));
                     }else{
                         movie.setContent(content);
+                        movie.setTitle(content);
                     }
                     movie.setUrl(hitDoc.get("url"));
                     movies.add(movie);

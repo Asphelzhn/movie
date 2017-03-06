@@ -10,6 +10,15 @@ public class Movie implements Serializable{
     private static final long serialVersionUID = 1L;//序列化版本信息
     private String url;
     private String content;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getContent() {
         return content;
@@ -32,6 +41,7 @@ public class Movie implements Serializable{
         return "Movie{" +
                 "url='" + url + '\'' +
                 ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }
