@@ -3,6 +3,7 @@ package com.xiao.dao.impl;
 import com.xiao.bean.Movie;
 import com.xiao.dao.SearchDao;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
@@ -31,6 +32,7 @@ public class SearchDaoImpl implements SearchDao{
 
     private final String path = "/Users/xiaojie/lucene";
     private final int number = 10;//默认检索结果数
+    private static final Logger logger = Logger.getLogger(SearchDaoImpl.class);
 
     public List<Movie> search(String keyWord) {
 
@@ -72,9 +74,9 @@ public class SearchDaoImpl implements SearchDao{
                     }
                     movie.setUrl(hitDoc.get("url"));
                     movies.add(movie);
-                    System.out.println(hit.score + " " + hitDoc.get("url"));
-                    System.out.println(hitDoc.get("content"));
-                    System.out.println("---------------------------------");
+                    logger.info(hit.score + " " + hitDoc.get("url"));
+                    logger.info(hitDoc.get("content"));
+                    logger.info("---------------------------------");
                 }
             }
 
