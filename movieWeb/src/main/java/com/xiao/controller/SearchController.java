@@ -1,12 +1,16 @@
 package com.xiao.controller;
 
+import com.xiao.Singleton.Source;
 import com.xiao.service.SearchService;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -36,6 +40,29 @@ public class SearchController {
         modelAndView.addObject("list", searchService.search(keywords));
         return modelAndView;
 
+    }
+
+    @RequestMapping(value = "/statistics", method = RequestMethod.POST)
+    @ResponseBody
+    public String statistics(@CookieValue(value = "userId", defaultValue = "unknown") String userId, String url) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        jsonObject.put("message", "没有进行数据的统计");
+        try {
+            if (!"unknown".equals(userId)) {
+                jsonObject.put("message", userId + ":统计成功");
+                if(StringUtils.isNotBlank(url)) {
+                    Source.getInstance().put(userId, url);
+                    logger.info("userId: "+ userId + ", url: " + url + ", times: " + Source.getInstance().get(userId).getRecord().get(url));
+                }
+            }
+        }catch (Exception e){
+            jsonObject.put("status", 500);
+            jsonObject.put("message", e.getLocalizedMessage());
+            e.printStackTrace();
+        }finally {
+            return jsonObject.toString();
+        }
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
