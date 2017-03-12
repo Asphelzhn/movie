@@ -33,7 +33,7 @@
 		</div>
 		<div class="w">
 		    <c:if test="${list != null && ((fn:length(list)) >= 0) }">
-			<ul class="search-list">
+			<ul class="search-list" id="JS_search_list">
 			    <c:forEach var="movie" items="${list}">
 				<li>
 					<h3 class="title">
@@ -50,5 +50,15 @@
             <h3 class="no-res">哈哈哈~~木有结果啦</h3>
             </c:if>
 		</div>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#JS_search_list').on('click','a',function(){
+					var _data = $(this).attr('href');
+					$.post('statistics',{url: _data},function(){});
+
+				});
+			});
+		</script>
 	</body>
 </html>
