@@ -1,0 +1,53 @@
+package com.xiao.jstorm;
+
+
+import backtype.storm.task.OutputCollector;
+import backtype.storm.task.TopologyContext;
+import backtype.storm.topology.OutputFieldsDeclarer;
+import backtype.storm.topology.base.BaseRichBolt;
+import backtype.storm.tuple.Tuple;
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by xiaojie on 17/5/20.
+ */
+public class CountBolt extends BaseRichBolt {
+
+    private static Logger logger = Logger.getLogger(CountBolt.class);
+
+    OutputCollector collector;
+    Map<String, Integer> map = new HashMap<String, Integer>();
+
+    /**
+     * 初始化
+     */
+    public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
+        this.collector = collector;
+    }
+
+    /**
+     * 执行方法
+     */
+    public void execute(Tuple input) {
+        String word = input.getString(0);
+        if(map.containsKey(word)){
+            Integer c = map.get(word);
+            map.put(word, c+1);
+        }else{
+            map.put(word, 1);
+        }
+        //测试输出
+        logger.info("结果:"+map);
+    }
+
+    /**
+     * 输出
+     */
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+
+    }
+
+}
