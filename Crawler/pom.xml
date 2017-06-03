@@ -95,6 +95,14 @@
       <version>1.1.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.alibaba.jstorm/jstorm-all -->
+    <dependency>
+      <groupId>com.alibaba.jstorm</groupId>
+      <artifactId>jstorm-core</artifactId>
+      <version>2.1.1</version>
+      <!--<scope>provided</scope>-->
+    </dependency>
+
     <!-- log4j -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
